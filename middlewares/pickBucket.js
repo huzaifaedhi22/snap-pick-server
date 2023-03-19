@@ -27,7 +27,8 @@ async function pickBucket(itemsArray) {
   const uniqueZones = [...new Set(zones)];
   const pickBuckets = uniqueZones.map(zone => ({
     zone,
-    items: []
+    items: [],
+    pickID: generateRandomID(),
   }));
 
   for (const item of merge) {
@@ -58,6 +59,14 @@ async function createPickBucket(buckets) {
   return response.data;
 }
 
+function generateRandomID() {
+  const digits = '0123456789';
+  let randomID = '';
+  for (let i = 0; i < 6; i++) {
+    randomID += digits[Math.floor(Math.random() * digits.length)];
+  }
+  return randomID;
+}
 
 
 

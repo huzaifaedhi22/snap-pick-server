@@ -25,9 +25,9 @@ const getZone = async(req,res,next) => {
 }
 
 //to get itemID's of all items in an order
-const getBins = async(req,res,next) => {
-    try {
-      
+
+async function getBins (itemsArray) {
+    try { 
         const bin = firestore.collection('Bins');
         const data = await bin.get();
         const binArray = [];
@@ -40,22 +40,47 @@ const getBins = async(req,res,next) => {
                 const ben = new Bin(
                     doc.data().binID,
                     doc.data().flag,
-                   
+                    doc.data().orderID,
                 );
                 binArray.push(ben);
+                console.log('In Bin Array');
+                
       
 
             });
-           
-            
+            console.log('From Get Bins');
+            console.log(binArray);
+            console.log(itemsArray);
+
+            let index = 0;
+        for (let bin of binArray) {
+        if (bin.orderID === '' && index < itemsArray.length) {
+            bin.orderID = itemsArray[index];
+            index++;
+        } else {
+            // index++;
+        }
+        }
+
+        binArray.forEach(bin => {
+            firestore.collection('Bins').doc(bin.binID).update({'orderID' : bin.orderID});
+            console.log(`Updated order ID for bin ${bin.binID}: ${bin.orderID}`);
+        
+        });
+
+        console.log('After updating');
+        console.log(binArray);
             res.send(binArray);
-          
         }
     } catch (error) {
-        res.status(400).send(error.message);
+        console.log(error.message);
     }
 
+
 }
+
+
+
 
 
 

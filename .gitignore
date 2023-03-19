@@ -1,0 +1,5 @@
+
+*.ts
+*.md
+*.map
+node_modules

@@ -1,9 +1,10 @@
 class Bin {
-    constructor (binID,flag) {
+    constructor (binID,flag,orderID) {
 
 
         this.flag = flag;
         this.binID = binID;
+        this.orderID = orderID;
         
    
 
