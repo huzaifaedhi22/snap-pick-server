@@ -11,9 +11,9 @@ const cron = require('node-cron');
 
 
 async function pickBucket(itemsArray) {
-  console.log('Running Pick Bucket')
-  const merge = itemsArray.flat(1);
+  console.log('Running Pick Bucket');
 
+  const merge = itemsArray.flat(1);
   const zoneMap = new Map();
   const uniqueChars = [...new Set(merge)];
 
@@ -22,29 +22,49 @@ async function pickBucket(itemsArray) {
     zoneMap.set(item, zone);
   }
 
-
   const zones = uniqueChars.map(item => zoneMap.get(item));
   const uniqueZones = [...new Set(zones)];
   const pickBuckets = uniqueZones.map(zone => ({
     zone,
-    items: [],
+    items: new Map(),
     pickID: generateRandomID(),
+    time: '',
   }));
 
   for (const item of merge) {
     const b = zoneMap.get(item);
     for (const pb of pickBuckets) {
       if (b === pb.zone) {
-        pb.items.push(item);
+        const count = pb.items.get(item) || 0;
+        pb.items.set(item, count + 1);
         break;
       }
     }
   }
+
   console.log(pickBuckets);
-  createPickBucket(pickBuckets);
+  const pickBucketsPlain = pickBuckets.map(pb => ({
+    zone: pb.zone,
+    items: Object.fromEntries(pb.items),
+    pickID: pb.pickID,
+    time: '',
+  }));
+  createPickBucket(pickBucketsPlain);
 
   return itemsArray;
 }
+
+
+function countItems(list) {
+  const itemCountMap = new Map();
+  let count;
+  for (const item of list) {
+     count = (itemCountMap.get(item) || 0) + 1;
+    //itemCountMap.set(item, count);
+  }
+  return count;
+}
+
 
 
 
