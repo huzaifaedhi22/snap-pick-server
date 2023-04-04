@@ -31,6 +31,7 @@ async function pickBucket(itemsArray) {
     time: '',
   }));
 
+  
   for (const item of merge) {
     const b = zoneMap.get(item);
     for (const pb of pickBuckets) {
@@ -42,17 +43,25 @@ async function pickBucket(itemsArray) {
     }
   }
 
+  // Add extra element '0000' : '0' to every pick bucket
+  for (const pb of pickBuckets) {
+    pb.items.set('0099',0);
+  
+  }
+   
   console.log(pickBuckets);
   const pickBucketsPlain = pickBuckets.map(pb => ({
     zone: pb.zone,
     items: Object.fromEntries(pb.items),
     pickID: pb.pickID,
     time: '',
+    picker: 'CUQLW'
   }));
   createPickBucket(pickBucketsPlain);
 
   return itemsArray;
 }
+
 
 
 function countItems(list) {
