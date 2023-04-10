@@ -54,7 +54,7 @@ async function pickBucket(itemsArray) {
     zone: pb.zone,
     items: Object.fromEntries(pb.items),
     pickID: pb.pickID,
-    time: '',
+    time: '4:06s',
     picker: 'CUQLW'
   }));
   createPickBucket(pickBucketsPlain);
