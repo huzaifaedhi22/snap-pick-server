@@ -43,11 +43,7 @@ async function pickBucket(itemsArray) {
     }
   }
 
-  // Add extra element '0000' : '0' to every pick bucket
-  for (const pb of pickBuckets) {
-    pb.items.set('0099',0);
-  
-  }
+ 
    
   console.log(pickBuckets);
   const pickBucketsPlain = pickBuckets.map(pb => ({
@@ -55,7 +51,8 @@ async function pickBucket(itemsArray) {
     items: Object.fromEntries(pb.items),
     pickID: pb.pickID,
     time: '4:06s',
-    picker: 'CUQLW'
+    picker: 'CUQLW',
+    status : 'pending'
   }));
   createPickBucket(pickBucketsPlain);
 
@@ -78,13 +75,13 @@ function countItems(list) {
 
 
 async function getItemZone(itemID) {
-  const response = await axios.get(`http://localhost:8080/api/products/${itemID}`);
+  const response = await axios.get(`${process.env.HOST_URL}/api/products/${itemID}`);
   return response.data;
 }
 
 
 async function createPickBucket(buckets) {
-  const response = await axios.post('http://localhost:8080/api/pickBuckets',buckets);
+  const response = await axios.post(`${process.env.HOST_URL}/api/pickBuckets`,buckets);
   return response.data;
 }
 
@@ -96,16 +93,6 @@ function generateRandomID() {
   }
   return randomID;
 }
-
-
-
-  
- 
-
-
-
-
-
 
 
 module.exports = {
