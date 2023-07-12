@@ -95,16 +95,6 @@ function generateRandomID() {
 }
 
 
-
-  
- 
-
-
-
-
-
-
-
 module.exports = {
   pickBucket,
   getItemZone
