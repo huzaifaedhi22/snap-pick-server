@@ -13,8 +13,9 @@ const { getBins } = require('./productController');
 const createOrder = async (req,res,next) => {
     try {
         const data = req.body;
-        await firestore.collection('orders').doc().set(data);
+        await firestore.collection('Orders').doc().set(data);
         res.send('Record Saved successfully');
+        
 
     } catch (error) {
         res.status(400).send(error.message);
